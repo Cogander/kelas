@@ -17,6 +17,7 @@ app.innerHTML=`
 </div>
 
 </div>
+
 `;
 
 loadActivity();
