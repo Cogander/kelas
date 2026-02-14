@@ -5,19 +5,21 @@ let app=document.getElementById("app");
 app.innerHTML=`
 
 <div class="topbar">
-<h2>Siswa: ${user.name}</h2>
+<h2>🎓 Siswa: ${user.name}</h2>
 <button onclick="logout()">Logout</button>
 </div>
 
+<div class="container">
+
 <div class="card">
-<h3>Tugas Tersedia</h3>
+<h3>Tugas</h3>
 <div id="tasks"></div>
 </div>
 
+</div>
 `;
 
 loadStudentTasks(user);
-
 }
 
 
@@ -25,18 +27,19 @@ loadStudentTasks(user);
 function loadStudentTasks(user){
 
 let tasks=DB.get("tasks");
-let tasksDiv=document.getElementById("tasks");
+let div=document.getElementById("tasks");
 
-tasksDiv.innerHTML="";
+div.innerHTML="";
 
 tasks.forEach(t=>{
 
-tasksDiv.innerHTML+=`
+div.innerHTML+=`
 <div class="card">
 <b>${t.title}</b><br>
 ${t.type}<br>
 
 <textarea id="ans${t.id}" placeholder="Jawaban"></textarea>
+
 <button onclick="submitAnswer('${t.id}','${user.name}')">
 Kirim
 </button>
@@ -45,7 +48,6 @@ Kirim
 `;
 
 });
-
 }
 
 
@@ -61,5 +63,4 @@ ans
 });
 
 alert("Jawaban terkirim");
-
 }
