@@ -238,4 +238,180 @@ document.getElementById("app").innerHTML=`
 <div id="tasks"></div>
 </div>
 
-<di
+<div class="card">
+<h3>Data Siswa</h3>
+<div id="students"></div>
+</div>
+
+</div>
+
+`;
+
+loadTasks();
+loadStudents();
+}
+
+
+function buatTugas(){
+
+let title=document.getElementById("title").value;
+let type=document.getElementById("type").value;
+
+let tasks=DB.get("tasks");
+
+tasks.push({
+id:uid(),
+title,
+type,
+time:new Date().toLocaleString()
+});
+
+DB.set("tasks",tasks);
+
+loadTasks();
+}
+
+
+function loadTasks(){
+
+let tasks=DB.get("tasks");
+let div=document.getElementById("tasks");
+
+div.innerHTML="";
+
+tasks.forEach(t=>{
+
+div.innerHTML+=`
+<div class="card">
+<b>${t.title}</b><br>
+${t.type}<br>
+${t.time}
+</div>
+`;
+
+});
+}
+
+
+function loadStudents(){
+
+let students=DB.get("students");
+let div=document.getElementById("students");
+
+div.innerHTML="";
+
+students.forEach(s=>{
+
+div.innerHTML+=`
+<div class="card">
+${s.name}<br>
+Password: ${s.password}
+</div>
+`;
+
+});
+}
+
+
+/* SISWA */
+
+function siswaUI(user){
+
+document.getElementById("app").innerHTML=`
+
+<div class="topbar">
+<h2>Siswa: ${user.name}</h2>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+<div class="card">
+<h3>Tugas</h3>
+<div id="tasks"></div>
+</div>
+
+</div>
+
+`;
+
+let tasks=DB.get("tasks");
+let div=document.getElementById("tasks");
+
+tasks.forEach(t=>{
+
+div.innerHTML+=`
+<div class="card">
+<b>${t.title}</b><br>
+${t.type}<br>
+<textarea id="ans${t.id}"></textarea>
+<button onclick="kirim('${t.id}','${user.name}')">Kirim</button>
+</div>
+`;
+
+});
+}
+
+
+function kirim(id,name){
+
+let ans=document.getElementById("ans"+id).value;
+
+let answers=DB.get("answers");
+
+answers.push({id,name,ans});
+
+DB.set("answers",answers);
+
+alert("Terkirim");
+
+}
+
+
+/* KEPSEK */
+
+function kepsekUI(user){
+
+document.getElementById("app").innerHTML=`
+
+<div class="topbar">
+<h2>Kepala Sekolah</h2>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+<div class="card">
+<h3>Aktivitas Guru</h3>
+<div id="act"></div>
+</div>
+
+</div>
+
+`;
+
+let tasks=DB.get("tasks");
+let div=document.getElementById("act");
+
+tasks.forEach(t=>{
+
+div.innerHTML+=`
+<div class="card">
+${t.title}<br>
+${t.type}<br>
+${t.time}
+</div>
+`;
+
+});
+}
+
+
+/* START */
+
+loadDashboard();
+
+</script>
+
+</body>
+</html>
