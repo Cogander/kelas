@@ -1,7 +1,3 @@
-function uid(){
-return Date.now().toString(36);
-}
-
 function login(){
 
 let role=document.getElementById("role").value;
@@ -15,7 +11,7 @@ return;
 }
 
 if(role==="kepsek" && pass!=="SmpXaverius1KepalaHebat"){
-info.innerText="Password Kepsek Salah";
+info.innerText="Password Salah";
 return;
 }
 
@@ -27,7 +23,7 @@ role
 
 localStorage.setItem("user",JSON.stringify(user));
 
-window.location.href="dashboard.html";
+location.href="dashboard.html";
 }
 
 
@@ -37,7 +33,7 @@ function loadDashboard(){
 let user=JSON.parse(localStorage.getItem("user"));
 
 if(!user){
-window.location.href="index.html";
+location.href="index.html";
 return;
 }
 
