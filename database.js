@@ -1,4 +1,4 @@
-const DB = {
+const DB={
 
 get(key){
 return JSON.parse(localStorage.getItem(key)) || [];
@@ -12,6 +12,6 @@ add(key,data){
 let arr=this.get(key);
 arr.push(data);
 this.set(key,arr);
-},
-
 }
+
+};
