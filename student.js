@@ -1,5 +1,7 @@
 function studentUI(user){
 
+let app=document.getElementById("app");
+
 app.innerHTML=`
 
 <div class="topbar">
@@ -23,18 +25,19 @@ loadStudentTasks(user);
 function loadStudentTasks(user){
 
 let tasks=DB.get("tasks");
+let tasksDiv=document.getElementById("tasks");
 
 tasksDiv.innerHTML="";
 
 tasks.forEach(t=>{
 
-tasks.innerHTML+=`
+tasksDiv.innerHTML+=`
 <div class="card">
 <b>${t.title}</b><br>
 ${t.type}<br>
 
 <textarea id="ans${t.id}" placeholder="Jawaban"></textarea>
-<button onclick="submit('${t.id}','${user.name}')">
+<button onclick="submitAnswer('${t.id}','${user.name}')">
 Kirim
 </button>
 
@@ -47,7 +50,7 @@ Kirim
 
 
 
-function submit(taskId,name){
+function submitAnswer(taskId,name){
 
 let ans=document.getElementById("ans"+taskId).value;
 
@@ -57,6 +60,6 @@ name,
 ans
 });
 
-alert("Terkirim");
+alert("Jawaban terkirim");
 
 }
