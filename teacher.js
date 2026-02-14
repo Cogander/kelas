@@ -1,78 +1,34 @@
-function teacherUI(user){
+function studentUI(user){
 
 let app=document.getElementById("app");
 
 app.innerHTML=`
 
 <div class="topbar">
-<h2>👨‍🏫 Guru: ${user.name}</h2>
+<h2>🎓 Siswa: ${user.name}</h2>
 <button onclick="logout()">Logout</button>
 </div>
 
 <div class="container">
 
 <div class="card">
-
-<h3>Buat Tugas</h3>
-
-<input id="title" placeholder="Judul">
-
-<select id="type">
-<option value="Tugas">Tugas</option>
-<option value="Ulangan">Ulangan</option>
-</select>
-
-<button onclick="createTask()">Buat</button>
-
-</div>
-
-<div class="card">
-<h3>Daftar Tugas</h3>
-<div id="taskList"></div>
-</div>
-
-<div class="card">
-<h3>Data Siswa</h3>
-<div id="studentList"></div>
+<h3>Tugas</h3>
+<div id="tasks"></div>
 </div>
 
 </div>
 
 `;
 
-loadTasks();
-loadStudents();
+loadStudentTasks(user);
 }
 
 
 
-function createTask(){
-
-let title=document.getElementById("title").value;
-let type=document.getElementById("type").value;
-
-if(!title) return alert("Isi judul");
+function loadStudentTasks(user){
 
 let tasks=DB.get("tasks");
-
-tasks.push({
-id:uid(),
-title,
-type,
-time:new Date().toLocaleString()
-});
-
-DB.set("tasks",tasks);
-
-loadTasks();
-}
-
-
-
-function loadTasks(){
-
-let tasks=DB.get("tasks");
-let div=document.getElementById("taskList");
+let div=document.getElementById("tasks");
 
 div.innerHTML="";
 
@@ -82,7 +38,13 @@ div.innerHTML+=`
 <div class="card">
 <b>${t.title}</b><br>
 ${t.type}<br>
-${t.time}
+
+<textarea id="ans${t.id}" placeholder="Jawaban"></textarea>
+
+<button onclick="submitAnswer('${t.id}','${user.name}')">
+Kirim
+</button>
+
 </div>
 `;
 
@@ -91,21 +53,16 @@ ${t.time}
 
 
 
-function loadStudents(){
+function submitAnswer(taskId,name){
 
-let students=DB.get("students");
-let div=document.getElementById("studentList");
+let ans=document.getElementById("ans"+taskId).value;
 
-div.innerHTML="";
-
-students.forEach(s=>{
-
-div.innerHTML+=`
-<div class="card">
-${s.name}<br>
-Password: ${s.password}
-</div>
-`;
-
+DB.add("answers",{
+taskId,
+name,
+ans
 });
+
+alert("Jawaban terkirim");
 }
+
