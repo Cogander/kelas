@@ -1,7 +1,3 @@
-function uid(){
-return Date.now().toString(36);
-}
-
 function login(){
 
 let role=document.getElementById("role").value;
@@ -14,9 +10,7 @@ info.innerText="Isi nama dulu";
 return;
 }
 
-
-/* ================= GURU ================= */
-
+// Guru
 if(role==="guru"){
 
 if(pass!=="SmpXaverius1GuruHebat"){
@@ -28,9 +22,7 @@ saveUser(role,name);
 return;
 }
 
-
-/* ================= KEPSEK ================= */
-
+// Kepala Sekolah
 if(role==="kepsek"){
 
 if(pass!=="SmpXaverius1KepalaHebat"){
@@ -42,28 +34,22 @@ saveUser(role,name);
 return;
 }
 
-
-/* ================= SISWA ================= */
-
+// Siswa
 let students=DB.get("students");
 
 let existing=students.find(s=>s.name===name);
 
-
 if(existing){
 
-// login normal
 if(existing.password!==pass){
 info.innerText="Password salah";
 return;
 }
 
 saveUser(role,name);
-return;
 
 }else{
 
-// siswa baru → buat password
 if(!pass){
 info.innerText="Buat password dulu";
 return;
@@ -77,10 +63,7 @@ password:pass
 DB.set("students",students);
 
 saveUser(role,name);
-return;
-
 }
-
 
 }
 
@@ -96,7 +79,7 @@ role
 
 localStorage.setItem("user",JSON.stringify(user));
 
-location.href="dashboard.html";
+window.location.href="dashboard.html";
 }
 
 
@@ -106,7 +89,7 @@ function loadDashboard(){
 let user=JSON.parse(localStorage.getItem("user"));
 
 if(!user){
-location.href="index.html";
+window.location.href="index.html";
 return;
 }
 
