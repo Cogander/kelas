@@ -5,8 +5,6 @@ background:linear-gradient(135deg,#0f172a,#1e293b);
 color:white;
 }
 
-/* LOGIN */
-
 .landing{
 display:flex;
 justify-content:center;
@@ -24,8 +22,7 @@ text-align:center;
 box-shadow:0 0 30px rgba(0,0,0,0.3);
 }
 
-.login-card input,
-.login-card select{
+input,select,textarea{
 width:100%;
 padding:12px;
 margin:10px 0;
@@ -35,7 +32,7 @@ background:#020617;
 color:white;
 }
 
-.login-card button{
+button{
 width:100%;
 padding:12px;
 border:none;
@@ -47,19 +44,16 @@ cursor:pointer;
 transition:0.3s;
 }
 
-.login-card button:hover{
+button:hover{
 background:#2563eb;
 transform:scale(1.05);
 }
-
-/* DASHBOARD */
 
 .topbar{
 background:#020617;
 padding:15px;
 display:flex;
 justify-content:space-between;
-align-items:center;
 }
 
 .container{
@@ -72,33 +66,4 @@ backdrop-filter:blur(15px);
 padding:20px;
 border-radius:16px;
 margin:10px 0;
-box-shadow:0 0 20px rgba(0,0,0,0.2);
-}
-
-button{
-padding:10px 15px;
-border:none;
-border-radius:8px;
-background:#3b82f6;
-color:white;
-cursor:pointer;
-}
-
-textarea{
-width:100%;
-padding:10px;
-border-radius:8px;
-border:none;
-background:#020617;
-color:white;
-margin-top:10px;
-}
-
-input,select{
-padding:10px;
-border-radius:8px;
-border:none;
-background:#020617;
-color:white;
-margin:5px 0;
 }
