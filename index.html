@@ -3,17 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <title>EduClass</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+margin:0;
+font-family:Segoe UI;
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+}
+
+.landing{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.login-card{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
+padding:40px;
+border-radius:16px;
+width:320px;
+text-align:center;
+}
+
+input,select,textarea{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:10px;
+border:none;
+background:#020617;
+color:white;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#3b82f6;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+.topbar{
+background:#020617;
+padding:15px;
+display:flex;
+justify-content:space-between;
+}
+
+.container{
+padding:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:20px;
+border-radius:16px;
+margin:10px 0;
+}
+</style>
+
 </head>
+<body>
 
-<body class="landing">
+<div id="app"></div>
 
-<div class="login-container">
+<script>
+
+/* DATABASE */
+
+const DB={
+get(key){ return JSON.parse(localStorage.getItem(key))||[] },
+set(key,val){ localStorage.setItem(key,JSON.stringify(val)) }
+};
+
+function uid(){
+return Date.now().toString(36);
+}
+
+function logout(){
+localStorage.removeItem("user");
+location.reload();
+}
+
+
+/* LOGIN PAGE */
+
+function showLogin(){
+
+document.getElementById("app").innerHTML=`
+
+<div class="landing">
 
 <div class="login-card">
 
 <h1>EduClass</h1>
-<p>Sistem Pembelajaran Digital</p>
 
 <select id="role">
 <option value="siswa">Siswa</option>
@@ -21,9 +110,8 @@
 <option value="kepsek">Kepala Sekolah</option>
 </select>
 
-<input type="text" id="name" placeholder="Nama">
-
-<input type="password" id="password" placeholder="Password">
+<input id="name" placeholder="Nama">
+<input id="password" type="password" placeholder="Password">
 
 <button onclick="login()">Masuk</button>
 
@@ -33,8 +121,121 @@
 
 </div>
 
-<script src="database.js"></script>
-<script src="app.js"></script>
+`;
+}
 
-</body>
-</html>
+
+/* LOGIN */
+
+function login(){
+
+let role=document.getElementById("role").value;
+let name=document.getElementById("name").value;
+let pass=document.getElementById("password").value;
+let info=document.getElementById("info");
+
+if(!name){
+info.innerText="Isi nama";
+return;
+}
+
+if(role==="guru"){
+if(pass!=="SmpXaverius1GuruHebat"){
+info.innerText="Password salah";
+return;
+}
+saveUser(role,name);
+return;
+}
+
+if(role==="kepsek"){
+if(pass!=="SmpXaverius1KepalaHebat"){
+info.innerText="Password salah";
+return;
+}
+saveUser(role,name);
+return;
+}
+
+
+/* SISWA */
+
+let students=DB.get("students");
+let s=students.find(x=>x.name===name);
+
+if(s){
+if(s.password!==pass){
+info.innerText="Password salah";
+return;
+}
+saveUser(role,name);
+}else{
+if(!pass){
+info.innerText="Buat password";
+return;
+}
+students.push({name,password:pass});
+DB.set("students",students);
+saveUser(role,name);
+}
+
+}
+
+
+function saveUser(role,name){
+
+let user={id:uid(),name,role};
+
+localStorage.setItem("user",JSON.stringify(user));
+
+loadDashboard();
+}
+
+
+/* DASHBOARD */
+
+function loadDashboard(){
+
+let user=JSON.parse(localStorage.getItem("user"));
+
+if(!user){
+showLogin();
+return;
+}
+
+if(user.role==="guru") guruUI(user);
+if(user.role==="siswa") siswaUI(user);
+if(user.role==="kepsek") kepsekUI(user);
+
+}
+
+
+/* GURU */
+
+function guruUI(user){
+
+document.getElementById("app").innerHTML=`
+
+<div class="topbar">
+<h2>Guru: ${user.name}</h2>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+<div class="card">
+<h3>Buat Tugas</h3>
+<input id="title" placeholder="Judul">
+<select id="type">
+<option>Tugas</option>
+<option>Ulangan</option>
+</select>
+<button onclick="buatTugas()">Buat</button>
+</div>
+
+<div class="card">
+<h3>Daftar Tugas</h3>
+<div id="tasks"></div>
+</div>
+
+<di
