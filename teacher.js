@@ -27,49 +27,18 @@ app.innerHTML=`
 </div>
 
 <div class="card">
-<h3>Daftar</h3>
+<h3>Daftar Tugas</h3>
 <div id="list"></div>
 </div>
 
-</div>
-`;
-
-loadTasks();
-}
-
-
-function createTask(){
-
-let data={
-id:uid(),
-title:document.getElementById("title").value,
-type:document.getElementById("type").value,
-time:new Date().toLocaleString()
-};
-
-DB.add("tasks",data);
-
-loadTasks();
-}
-
-
-
-function loadTasks(){
-
-let tasks=DB.get("tasks");
-let list=document.getElementById("list");
-
-list.innerHTML="";
-
-tasks.forEach(t=>{
-
-list.innerHTML+=`
 <div class="card">
-<b>${t.title}</b><br>
-${t.type}<br>
-${t.time}
+<h3>Data Siswa & Password</h3>
+<div id="students"></div>
+</div>
+
 </div>
 `;
 
-});
+loadTasks();
+loadStudents();
 }
