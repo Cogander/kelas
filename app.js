@@ -1,8 +1,13 @@
+function uid(){
+return Date.now().toString(36);
+}
+
 function login(){
 
 let role=document.getElementById("role").value;
 let name=document.getElementById("name").value;
 let pass=document.getElementById("password").value;
+let info=document.getElementById("info");
 
 if(role==="guru" && pass!=="SmpXaverius1GuruHebat"){
 info.innerText="Password Guru Salah";
@@ -22,7 +27,7 @@ role
 
 localStorage.setItem("user",JSON.stringify(user));
 
-location.href="dashboard.html";
+window.location.href="dashboard.html";
 }
 
 
@@ -30,7 +35,11 @@ location.href="dashboard.html";
 function loadDashboard(){
 
 let user=JSON.parse(localStorage.getItem("user"));
-if(!user) return;
+
+if(!user){
+window.location.href="index.html";
+return;
+}
 
 if(user.role==="guru") teacherUI(user);
 if(user.role==="siswa") studentUI(user);
